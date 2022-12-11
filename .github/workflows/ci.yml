@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    types: ['opened', 'edited', 'synchronize', 'reopened']
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+        token: ${{ secrets.ECS_TOKEN }}
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 2.0.x
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 7.0.x
+        include-prerelease: true
+    - name: Restore dependencies
+      run: |
+        dotnet workload restore
+        dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-restore --logger "trx;LogFileName=test-results.trx"
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      with:
+        name: Test report
+        path: "**/test-results.trx"
+        reporter: dotnet-trx
