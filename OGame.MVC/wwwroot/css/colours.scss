@@ -11,6 +11,11 @@ $highlight: #001C20;
 
 $primary-button: #E68318;
 
+$red: #F08080;
+$amber: #EEE8AA;
+$green: #7FFFD4;
+$blue: #87CEEB;
+
 $all-colours: (
   "background": $background,
   "primary": $primary,
@@ -19,7 +24,11 @@ $all-colours: (
   "grey": $grey,
   "accent": $accent,
   "highlight": $highlight,
-  "primary-button": $primary-button
+  "primary-button": $primary-button,
+  "red": $red,
+  "amber": $amber,
+  "green": $green,
+  "blue": $blue
 );
 
 @each $name, $colour in $all-colours {

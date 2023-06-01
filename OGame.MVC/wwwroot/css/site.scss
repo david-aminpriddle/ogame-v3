@@ -3,4 +3,9 @@
 body {
   background-color: $background;
   color: $primary-text;
+  font-family: Roboto, sans-serif;
+}
+
+.small-caps {
+  font-variant: small-caps;
 }
