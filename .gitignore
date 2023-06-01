@@ -351,4 +351,4 @@ MigrationBackup/
 /.idea
 
 # Tailwind
-css/tailwind.css
+/OGame.MVC/wwwroot/css/tailwind.css

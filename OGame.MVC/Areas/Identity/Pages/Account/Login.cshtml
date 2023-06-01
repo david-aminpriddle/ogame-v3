@@ -1,8 +1,14 @@
 ﻿@page
 @model LoginModel
 
+@inject SignInManager<IdentityUser> SignInManager
+
 @{
     ViewData["Title"] = "Log in";
+    if (SignInManager.IsSignedIn(User))
+    {
+        Response.Redirect("/");
+    }
 }
 
 <div class="flex flex-col items-center">
