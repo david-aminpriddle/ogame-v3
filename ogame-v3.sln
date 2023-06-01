@@ -3,15 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGame.Client", "OGame.Client\OGame.Client.csproj", "{81E50BDE-1BA9-477D-9C8C-439FD883EEED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGame.MVC", "OGame.MVC\OGame.MVC.csproj", "{7A19DD20-C890-446F-8F71-2B30F413160E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS", "ecs\ECS\ECS.csproj", "{BC2E0AAD-E425-45BA-9273-C037A5B53215}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZFramework", "ecs\ZFramework\ZFramework.csproj", "{43F63F3C-4AE1-40EF-BCA9-33856EF38805}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Analyzers", "ecs\ECS.Analyzers\ECS.Analyzers.csproj", "{BD4B6D60-62CD-4307-B120-4C42F5159E40}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ECS", "ECS", "{482AAD38-36F2-4270-A063-DEA08533F3DB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{34ABEE31-C0F1-4E1B-B0D8-62C3BCF1DF21}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,26 +19,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{81E50BDE-1BA9-477D-9C8C-439FD883EEED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81E50BDE-1BA9-477D-9C8C-439FD883EEED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81E50BDE-1BA9-477D-9C8C-439FD883EEED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81E50BDE-1BA9-477D-9C8C-439FD883EEED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC2E0AAD-E425-45BA-9273-C037A5B53215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC2E0AAD-E425-45BA-9273-C037A5B53215}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC2E0AAD-E425-45BA-9273-C037A5B53215}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC2E0AAD-E425-45BA-9273-C037A5B53215}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43F63F3C-4AE1-40EF-BCA9-33856EF38805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43F63F3C-4AE1-40EF-BCA9-33856EF38805}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43F63F3C-4AE1-40EF-BCA9-33856EF38805}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43F63F3C-4AE1-40EF-BCA9-33856EF38805}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD4B6D60-62CD-4307-B120-4C42F5159E40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD4B6D60-62CD-4307-B120-4C42F5159E40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD4B6D60-62CD-4307-B120-4C42F5159E40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD4B6D60-62CD-4307-B120-4C42F5159E40}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{BC2E0AAD-E425-45BA-9273-C037A5B53215} = {482AAD38-36F2-4270-A063-DEA08533F3DB}
-		{BD4B6D60-62CD-4307-B120-4C42F5159E40} = {482AAD38-36F2-4270-A063-DEA08533F3DB}
-		{43F63F3C-4AE1-40EF-BCA9-33856EF38805} = {482AAD38-36F2-4270-A063-DEA08533F3DB}
+		{7A19DD20-C890-446F-8F71-2B30F413160E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A19DD20-C890-446F-8F71-2B30F413160E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A19DD20-C890-446F-8F71-2B30F413160E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A19DD20-C890-446F-8F71-2B30F413160E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
