@@ -1,8 +1,25 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center flex flex-col items-center mt-12">
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <a asp-area="Identity" asp-page="/Account/Login"
+           class="background-secondary border-accent border-2 border-solid px-20 py-6 rounded-lg hover:bg-gradient-to-b from-ogame-secondary to-ogame-secondary-darker">
+            Login
+        </a>
+    }
+    else
+    {
+        <a asp-area="Game" asp-page="/Home/Index"
+           class="background-primary-button border-accent border-2 border-solid px-20 py-6 rounded-lg hover:bg-gradient-to-b from-ogame-primary to-ogame-primary-darker">
+            Go to the game
+        </a>
+    }
 </div>
