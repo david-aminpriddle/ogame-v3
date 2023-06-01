@@ -10,16 +10,18 @@
 <div class="text-center flex flex-col items-center mt-12">
     @if (!SignInManager.IsSignedIn(User))
     {
-        <a asp-area="Identity" asp-page="/Account/Login"
-           class="background-secondary border-accent border-2 border-solid px-20 py-6 rounded-lg hover:bg-gradient-to-b from-ogame-secondary to-ogame-secondary-darker">
-            Login
+        <a asp-area="Identity" asp-page="/Account/Login">
+            <div class="border-green-50 border-2 border-solid px-20 py-6 rounded-lg bg-green-200/10">
+                Login
+            </div>
         </a>
     }
     else
     {
-        <a asp-area="Game" asp-page="/Home/Index"
-           class="background-primary-button border-accent border-2 border-solid px-20 py-6 rounded-lg hover:bg-gradient-to-b from-ogame-primary to-ogame-primary-darker">
-            Go to the game
+        <a asp-area="Game" asp-page="/Home/Index">
+            <div class="border-green-50 border-2 border-solid px-20 py-6 rounded-lg bg-green-200/10 animate-pulse">
+                Enter ship
+            </div>
         </a>
     }
 </div>

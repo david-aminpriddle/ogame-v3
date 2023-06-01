@@ -32,11 +32,11 @@
     @apply px-3 py-1 rounded w-52 bg-gray-50 mr-2 text-gray-600;
   }
 
-  button[type="submit"] {
+  button[type="submit"]:not(.link-button) {
     @apply px-3 py-1 border border-amber-200 rounded bg-amber-300/50 text-amber-50 transition-colors duration-150 ease-in-out;
   }
 
-  button[type="submit"]:hover {
+  button[type="submit"]:not(.link-button):hover {
     @apply bg-amber-300/75 text-white;
   }
 }
