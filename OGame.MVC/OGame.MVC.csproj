@@ -16,6 +16,8 @@
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.32" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
@@ -25,6 +27,24 @@
     <ItemGroup>
       <Folder Include="Areas\Game\Data" />
       <Folder Include="Areas\Game\Models" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="wwwroot_temp\favicon.ico">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\public\favicon.ico" />
+      <_ContentIncludedByDefault Remove="wwwroot\public\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\public\logo192.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\public\logo512.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\public\manifest.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\public\robots.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot_temp\package-lock.json" />
+      <_ContentIncludedByDefault Remove="wwwroot_temp\package.json" />
     </ItemGroup>
 
 </Project>
