@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OGame.MVC.Data;
-using System;
 using System.Diagnostics;
-using System.Net.WebSockets;
+using System.Net;
 using Microsoft.AspNetCore.WebSockets;
+using Yarp.ReverseProxy.Forwarder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +18,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+builder.Services.AddHttpForwarder();
+
+builder.Services.AddWebSockets(options => {});
 
 var app = builder.Build();
 
@@ -29,8 +30,22 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-app.MapReverseProxy();
 
+var httpClient = new HttpMessageInvoker(new SocketsHttpHandler()
+{
+    UseProxy = false,
+    AllowAutoRedirect = false,
+    AutomaticDecompression = DecompressionMethods.None,
+    UseCookies = false,
+    ActivityHeadersPropagator = new ReverseProxyPropagator(DistributedContextPropagator.Current),
+    ConnectTimeout = TimeSpan.FromSeconds(15),
+});
+var transformer = HttpTransformer.Default; // or HttpTransformer.Default;
+var requestConfig = new ForwarderRequestConfig { ActivityTimeout = TimeSpan.FromSeconds(100) };
+
+var httpForwarder = app.Services.GetRequiredService<IHttpForwarder>();
+
+app.UseWebSockets();
 if (app.Environment.IsDevelopment())
 {
     app.Use(async (context, next) =>
@@ -57,6 +72,22 @@ if (app.Environment.IsDevelopment())
                 return;
             }
         }
+        else if (context.WebSockets.IsWebSocketRequest)
+        {
+            var error = await httpForwarder.SendAsync(context, "ws://localhost:3000/",
+                httpClient, requestConfig, transformer);
+            // Check if the operation was successful
+            if (error != ForwarderError.None)
+            {
+                var errorFeature = context.GetForwarderErrorFeature();
+                var exception = errorFeature.Exception;
+
+                if (exception is not null)
+                {
+                    throw exception;
+                }
+            }
+        }
 
         await next.Invoke();
     });
@@ -65,51 +96,6 @@ else
 {
     app.UseStaticFiles();
 }
-
-app.Use(async (context, next) =>
-{
-    if (context.WebSockets.IsWebSocketRequest)
-    {
-        using var client = new ClientWebSocket();
-        var targetUri = new Uri("ws://localhost:3000" + context.Request.Path);
-
-        await client.ConnectAsync(targetUri, context.RequestAborted);
-
-        var serverSocket = await context.WebSockets.AcceptWebSocketAsync();
-
-        var buffer = new byte[1024 * 4];
-        var clientSegment = new ArraySegment<byte>(buffer);
-        var serverSegment = new ArraySegment<byte>(buffer);
-
-        var clientReceiveTask = client.ReceiveAsync(clientSegment, context.RequestAborted);
-        var serverReceiveTask = serverSocket.ReceiveAsync(serverSegment, context.RequestAborted);
-
-        while (client.State == WebSocketState.Open && serverSocket.State == WebSocketState.Open)
-        {
-            var completedTask = await Task.WhenAny(clientReceiveTask, serverReceiveTask);
-
-            Console.WriteLine("completedTask: " + completedTask);
-
-            if (completedTask == clientReceiveTask)
-            {
-                await serverSocket.SendAsync(new ArraySegment<byte>(buffer, 0, clientReceiveTask.Result.Count), clientReceiveTask.Result.MessageType, clientReceiveTask.Result.EndOfMessage, context.RequestAborted);
-                clientReceiveTask = client.ReceiveAsync(clientSegment, context.RequestAborted);
-            }
-            else // serverReceiveTask
-            {
-                await client.SendAsync(new ArraySegment<byte>(buffer, 0, serverReceiveTask.Result.Count), serverReceiveTask.Result.MessageType, serverReceiveTask.Result.EndOfMessage, context.RequestAborted);
-                serverReceiveTask = serverSocket.ReceiveAsync(serverSegment, context.RequestAborted);
-            }
-        }
-
-        await serverSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", context.RequestAborted);
-        await client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", context.RequestAborted);
-    }
-    else
-    {
-        await next();
-    }
-});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

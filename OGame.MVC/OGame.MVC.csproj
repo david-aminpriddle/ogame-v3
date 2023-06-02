@@ -10,7 +10,9 @@
 
     <ItemGroup>
         <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
-        <Watch Remove="wwwroot\**\*" />
+        <Content Remove="wwwroot\**" />
+        <Content Include="wwwroot\**" Watch="false" />
+        <Content Remove="wwwroot\node_modules\**" />
     </ItemGroup>
 
     <ItemGroup>
