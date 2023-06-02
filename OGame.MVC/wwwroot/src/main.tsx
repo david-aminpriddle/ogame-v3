@@ -2,4 +2,7 @@ import { render } from 'preact'
 import { App } from './app.tsx'
 import './index.css'
 
-render(<App />, document.getElementById('app') as HTMLElement);
+const container = document.getElementById('app') as HTMLElement;
+if (container) {
+  render(<App />, container);
+}
