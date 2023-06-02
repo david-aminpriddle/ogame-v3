@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OGame.MVC.Data;
@@ -45,6 +46,15 @@ var requestConfig = new ForwarderRequestConfig { ActivityTimeout = TimeSpan.From
 
 var httpForwarder = app.Services.GetRequiredService<IHttpForwarder>();
 
+var headersToIgnore = new[]
+{
+    "Connection",
+    "Transfer-Encoding",
+    "Keep-Alive",
+    "Upgrade",
+    "Proxy-Connection",
+}.ToImmutableHashSet();
+
 app.UseWebSockets();
 if (app.Environment.IsDevelopment())
 {
@@ -64,7 +74,10 @@ if (app.Environment.IsDevelopment())
 
                 foreach (var responseHeader in serverResponse.Headers)
                 {
-                    context.Response.Headers.Add(responseHeader.Key, responseHeader.Value.ToArray());
+                    if (!headersToIgnore.Contains(responseHeader.Key))
+                    {
+                        context.Response.Headers.Add(responseHeader.Key, responseHeader.Value.ToArray());
+                    }
                 }
 
                 context.Response.Headers.ContentType = "application/javascript";
