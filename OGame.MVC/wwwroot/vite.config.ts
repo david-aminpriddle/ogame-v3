@@ -3,13 +3,18 @@ import preact from '@preact/preset-vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/dist/',
   plugins: [
-    preact({ devtoolsInProd: true })
+    preact({ devtoolsInProd: true, prefreshEnabled: true })
   ],
+  preview: {
+    port: 3000,
+    strictPort: true,
+    https: false,
+  },
   server: {
     port: 3000,
     strictPort: true,
+    https: false,
     cors: false,
   },
   build: {

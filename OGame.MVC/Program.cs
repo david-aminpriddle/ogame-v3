@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OGame.MVC.Data;
+using System;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +53,39 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapFallbackToAreaController("Index", "Home", "Game");
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/@vite/client") ||
+        context.Request.Path.Value.StartsWith("/src/"))
+    {
+        if (context.Request.Path.Value.StartsWith("/src/index.css"))
+        {
+            Debugger.Break();
+        }
+        
+        var client = new HttpClient();
+        var serverResponse = await client.GetAsync("http://localhost:3000" + context.Request.Path);
+        if (serverResponse.IsSuccessStatusCode)
+        {
+            var content = await serverResponse.Content.ReadAsByteArrayAsync();
+
+            context.Response.Headers.ContentType = "application/javascript";
+            await context.Response.Body.WriteAsync(content);
+            return;
+        }
+    }
+
+    await next.Invoke();
+});
+
+app.UseSpa(spa =>
+{
+    if (app.Environment.IsDevelopment())
+    {
+        spa.Options.SourcePath = "wwwroot";
+    }
+});
 
 app.MapRazorPages();
 

@@ -430,7 +430,7 @@
   resolved "https://registry.yarnpkg.com/@prefresh/utils/-/utils-1.2.0.tgz#cbdfe549b207041e38bb6cc382408b30cd24fec8"
   integrity sha512-KtC/fZw+oqtwOLUFM9UtiitB0JsVX0zLKNyRTA332sqREqSALIIQQxdUCS1P3xR/jT1e2e8/5rwH6gdcMLEmsQ==
 
-"@prefresh/vite@^2.2.8":
+"@prefresh/vite@^2.2.8", "@prefresh/vite@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@prefresh/vite/-/vite-2.4.0.tgz#53fd34b8df21e4e4b03f5147a3277bb3395411d0"
   integrity sha512-makifAztmlWCMx79E8tl/gMKPKe3WartplGk+GTqtXSZ/JqoTiN4nkF9GqlhATqGEvsdtRnlDGKQ09s7fneJ/Q==
