@@ -43,3 +43,7 @@ button[type="submit"]:not(.link-button) {
 button[type="submit"]:not(.link-button):hover {
   @apply bg-amber-300/75 text-white;
 }
+
+.small-caps {
+  font-variant: small-caps;
+}
