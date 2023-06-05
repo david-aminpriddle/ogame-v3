@@ -3,6 +3,9 @@ param(
     [bool]$RunDotNetWatch = $true
 )
 
+# Set the error action preference to stop so that the script stops if an error occurs
+$ErrorActionPreference = "Stop"
+
 # Function to check if all containers are up
 function ContainersAreUp {
     $containers = "ogame-v3_db_1", "ogame-v3_cache_1"
@@ -16,6 +19,11 @@ function ContainersAreUp {
     }
 
     return $true
+}
+
+# Run podman machine start if it's not running (run podman machine inspect and check for "State": "stopped" in the first object in the array)
+if ((podman machine inspect | ConvertFrom-Json)[0].State -eq "stopped") {
+    podman machine start
 }
 
 # Start vite-watcher.ps1 script
