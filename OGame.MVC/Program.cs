@@ -95,6 +95,12 @@ if (app.Environment.IsDevelopment())
                 var errorFeature = context.GetForwarderErrorFeature();
                 var exception = errorFeature.Exception;
 
+                // Handle The client reset the request stream by swallowing it
+                if (exception is IOException { Message: "The client reset the request stream." })
+                {
+                    return;
+                }
+
                 if (exception is not null)
                 {
                     throw exception;
