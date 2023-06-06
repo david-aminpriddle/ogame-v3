@@ -6,11 +6,6 @@ export default defineConfig({
   plugins: [
     preact({ devtoolsInProd: true, prefreshEnabled: true })
   ],
-  preview: {
-    port: 3000,
-    strictPort: true,
-    https: false,
-  },
   server: {
     port: 3000,
     strictPort: true,

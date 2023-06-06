@@ -1,5 +1,3 @@
-# starts yarn dev and restarts if it crashes
-
 # Define a function to stop the process
 function Stop-ProcessGracefully {
     param($Process)
@@ -9,21 +7,63 @@ function Stop-ProcessGracefully {
     }
 }
 
+function Close-ViteServer {
+    # read OGame.MVC/wwwroot/vite.config.ts to get the port
+    $vite_config = Get-Content -Path "OGame.MVC/wwwroot/vite.config.ts" -Raw
+    $port = $vite_config -match 'port: (\d+)'
+    $port = $Matches[1]
+
+    $connection = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
+    if ($connection) {
+        $process = Get-Process -Id $connection.OwningProcess
+        if ($process) {
+            echo "Server found, stopping..."
+            Stop-ProcessGracefully -Process $process
+        }
+
+        echo "Server restarting..."
+    }
+}
+
+echo "Checking for running server..."
+Close-ViteServer
+
+$process = Start-Process -PassThru -FilePath "yarn.cmd" -ArgumentList "dev" -WorkingDirectory "OGame.MVC/wwwroot" -WindowStyle Hidden -RedirectStandardError "OGame.MVC/wwwroot/vite-error.log" -RedirectStandardOutput "OGame.MVC/wwwroot/vite.log"
+
+echo "Server started"
+
 # Register a script block that will be invoked when the user presses Ctrl+C
 $null = Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {
     Write-Host "Cleaning up before exit..."
-    Stop-ProcessGracefully -Process $process
+    Stop-Process -Id $process.Id -Force
 } -SupportEvent
 
-$process = Start-Process -PassThru -FilePath "yarn.cmd" -ArgumentList "dev" -WorkingDirectory "OGame.MVC/wwwroot" -WindowStyle Hidden
+$continueLoop = $true
 
-while ($true) {
-    $process.WaitForExit()
+while ($continueLoop) {
+    if ($process.WaitForExit(1000)) {
+        # Check if process was not externally stopped
+        if ($process.ExitCode -ne 0) {
+            $exitCode = $process.ExitCode
 
-    # Check if process was not externally stopped
-    if ($process.ExitCode -ne 0) {
-        $process = Start-Process -PassThru -FilePath "yarn.cmd" -ArgumentList "dev" -WorkingDirectory "OGame.MVC/wwwroot" -WindowStyle Hidden
-    } else {
-        break
+            $process = Start-Process -PassThru -FilePath "yarn.cmd" -ArgumentList "dev" -WorkingDirectory "OGame.MVC/wwwroot" -WindowStyle Hidden -RedirectStandardError "OGame.MVC/wwwroot/vite-error.log" -RedirectStandardOutput "OGame.MVC/wwwroot/vite.log"
+
+            echo "Server crashed with exit code $($exitCode). Restarted."
+        } else {
+            $continueLoop = $false
+        }
+    }
+
+    if ($Host.UI.RawUI.KeyAvailable) {
+        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+
+        # Check if the key pressed is Ctrl+C
+        if ($key.VirtualKeyCode -eq 67 -and ($key.ControlKeyState -band 1)) {
+            Write-Host "Ctrl+C detected. Cleaning up before exit..."
+            Stop-Process -Id $process.Id -Force
+            $continueLoop = $false
+        }
     }
 }
+
+Close-ViteServer
