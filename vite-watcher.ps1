@@ -28,6 +28,10 @@ function Close-ViteServer {
 echo "Checking for running server..."
 Close-ViteServer
 
+# run yarn install
+echo "Installing dependencies..."
+yarn --cwd "OGame.MVC/wwwroot" install
+
 $process = Start-Process -PassThru -FilePath "yarn.cmd" -ArgumentList "dev" -WorkingDirectory "OGame.MVC/wwwroot" -WindowStyle Hidden -RedirectStandardError "OGame.MVC/wwwroot/vite-error.log" -RedirectStandardOutput "OGame.MVC/wwwroot/vite.log"
 
 echo "Server started"
