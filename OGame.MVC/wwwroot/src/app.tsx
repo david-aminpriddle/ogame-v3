@@ -1,3 +1,5 @@
+import spaceDock from './assets/images/space dock.jpg';
+
 export function App() {
   return (
     <div className="flex flex-row flex-1">
@@ -86,8 +88,8 @@ export function App() {
           Notifications
         </div>
       </div>
-      <div className="flex flex-col flex-1 m-3 text-xs border rounded-lg p-3">
-        Test
+      <div className="flex flex-col flex-1 flex-grow-1 m-3 text-xs border rounded-lg p-3">
+        <img src={spaceDock} className="flex object-contain"/>
       </div>
     </div>
   );

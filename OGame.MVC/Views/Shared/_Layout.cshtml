@@ -10,7 +10,7 @@
     <base href="~/"/>
     <script type="module" src="@@vite/client"></script>
 </head>
-<body class="flex flex-col h-full">
+<body class="flex flex-col h-full max-h-screen">
 <header>
     <nav class="mb-4">
         <ul class="flex flex-row justify-around p-2">
@@ -22,7 +22,7 @@
     </nav>
 </header>
 <div class="flex flex-1">
-    <main role="main" class="flex flex-1">
+    <main role="main" class="flex flex-1 justify-center">
         @RenderBody()
     </main>
 </div>
