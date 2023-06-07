@@ -26,9 +26,6 @@ if ((podman machine inspect | ConvertFrom-Json)[0].State -eq "stopped") {
     podman machine start
 }
 
-# Start vite-watcher.ps1 script
-Start-Process -FilePath "powershell" -ArgumentList "-File .\vite-watcher.ps1" -NoNewWindow
-
 # Start podman-compose up in a separate process
 Start-Process -FilePath "podman-compose" -ArgumentList "up" -NoNewWindow
 
