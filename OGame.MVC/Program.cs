@@ -31,8 +31,7 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-
-var httpClient = new HttpMessageInvoker(new SocketsHttpHandler()
+var websocketHttpClient = new HttpMessageInvoker(new SocketsHttpHandler()
 {
     UseProxy = false,
     AllowAutoRedirect = false,
@@ -41,7 +40,16 @@ var httpClient = new HttpMessageInvoker(new SocketsHttpHandler()
     ActivityHeadersPropagator = new ReverseProxyPropagator(DistributedContextPropagator.Current),
     ConnectTimeout = TimeSpan.FromSeconds(15),
 });
-var transformer = HttpTransformer.Default; // or HttpTransformer.Default;
+
+var httpClient = new HttpMessageInvoker(new HttpClientHandler
+{
+    UseProxy = false,
+    AllowAutoRedirect = false,
+    AutomaticDecompression = DecompressionMethods.None,
+    UseCookies = false,
+});
+
+var transformer = HttpTransformer.Default;
 var requestConfig = new ForwarderRequestConfig { ActivityTimeout = TimeSpan.FromSeconds(100) };
 
 var httpForwarder = app.Services.GetRequiredService<IHttpForwarder>();
@@ -65,8 +73,23 @@ if (app.Environment.IsDevelopment())
             context.Request.Path.Value.StartsWith("/node_modules/")
            )
         {
+            var pathFileExtension = Path.GetExtension(context.Request.Path.Value);
+            var isImage = pathFileExtension == ".png" || pathFileExtension == ".jpg" || pathFileExtension == ".jpeg" ||
+                          pathFileExtension == ".gif";
+
+            if (isImage)
+            {
+
+            }
+
             var client = new HttpClient();
-            var serverResponse = await client.GetAsync("http://localhost:3000" + context.Request.Path);
+            var requestPath = "http://localhost:3000" + context.Request.Path;
+            if (context.Request.QueryString.HasValue)
+            {
+                requestPath += $"?{context.Request.QueryString}";
+            }
+
+            var serverResponse = await client.GetAsync(requestPath);
 
             if (serverResponse.IsSuccessStatusCode)
             {
@@ -81,6 +104,7 @@ if (app.Environment.IsDevelopment())
                 }
 
                 context.Response.Headers.ContentType = "application/javascript";
+
                 await context.Response.Body.WriteAsync(content);
                 return;
             }
@@ -88,7 +112,7 @@ if (app.Environment.IsDevelopment())
         else if (context.WebSockets.IsWebSocketRequest)
         {
             var error = await httpForwarder.SendAsync(context, "ws://localhost:3000/",
-                httpClient, requestConfig, transformer);
+                websocketHttpClient, requestConfig, transformer);
             // Check if the operation was successful
             if (error != ForwarderError.None)
             {
