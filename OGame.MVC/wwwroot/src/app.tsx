@@ -4,7 +4,7 @@ export function App() {
   return (
     <div className="flex flex-row flex-1">
       <div className="flex flex-col m-3 gap-3">
-        <div className="flex border rounded-lg p-3 gap-3 flex-col">
+        <div className="flex border rounded-lg p-3 gap-3 flex-col flex-1 justify-around">
           <div className="flex flex-row gap-3">
             <div className="w-20 h-20 border rounded-lg text-sm small-caps flex flex-col items-center text-gray-400 border-gray-400 cursor-pointer justify-between py-3">
               <div>Impulse</div>
@@ -14,6 +14,8 @@ export function App() {
               <div>FTL</div>
               <div>off</div>
             </div>
+          </div>
+          <div className="flex flex-row gap-3">
             <div className="w-20 h-20 border rounded-lg text-sm small-caps flex flex-col items-center text-green-500 border-green-500 cursor-default justify-between py-3">
               <div>Fuel</div>
               <div>
@@ -28,7 +30,8 @@ export function App() {
             </div>
           </div>
           <div className="flex flex-row gap-3">
-            <div className="w-20 h-20 border rounded-lg text-sm small-caps flex flex-col items-center text-gray-400 border-gray-400 cursor-default justify-between py-2">
+            <div className="w-20 h-20 border rounded-lg text-sm small-caps flex flex-col
+              items-center text-gray-400 border-gray-400 cursor-default justify-between py-2">
               <div>Location</div>
               <div>Sector 0</div>
               <div>[0, 14, 2]</div>
@@ -39,6 +42,8 @@ export function App() {
                 100%
               </div>
             </div>
+          </div>
+          <div className="flex flex-row gap-3">
             <div className="w-20 h-20 border rounded-lg text-sm small-caps flex flex-col items-center text-green-500 border-green-500 cursor-default justify-between py-3">
               <div>Shields</div>
               <div>
@@ -64,6 +69,8 @@ export function App() {
                 None
               </div>
             </div>
+          </div>
+          <div className="flex flex-row gap-3">
             <div className="w-20 h-20 border rounded-lg text-sm small-caps flex flex-col items-center text-gray-400 border-gray-400 cursor-default justify-between py-2">
               <div>Cargo</div>
               <div className="text-xs">
@@ -84,12 +91,11 @@ export function App() {
             </div>
           </div>
         </div>
-        <div className="flex flex-1 border rounded-lg p-3 gap-3 flex-col text-sm">
-          Notifications
-        </div>
       </div>
-      <div className="flex flex-col flex-1 flex-grow-1 m-3 text-xs border rounded-lg p-3">
-        <img src={spaceDock} className="flex object-contain"/>
+      <div className="flex flex-col flex-1 m-3 text-xs border rounded-lg p-3">
+        <div style={{backgroundImage: `url('${spaceDock}')`}} className="flex flex-1 bg-center bg-contain bg-no-repeat">
+
+        </div>
       </div>
     </div>
   );
