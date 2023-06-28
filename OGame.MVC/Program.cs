@@ -63,79 +63,79 @@ var headersToIgnore = new[]
     "Proxy-Connection",
 }.ToImmutableHashSet();
 
-app.UseWebSockets();
-if (app.Environment.IsDevelopment())
-{
-    app.Use(async (context, next) =>
-    {
-        if (context.Request.Path.StartsWithSegments("/@vite/client") ||
-            context.Request.Path.Value.StartsWith("/src/") ||
-            context.Request.Path.Value.StartsWith("/node_modules/")
-           )
-        {
-            var pathFileExtension = Path.GetExtension(context.Request.Path.Value);
-            var isImage = pathFileExtension == ".png" || pathFileExtension == ".jpg" || pathFileExtension == ".jpeg" ||
-                          pathFileExtension == ".gif";
-
-            if (isImage)
-            {
-
-            }
-
-            var client = new HttpClient();
-            var requestPath = "http://localhost:3000" + context.Request.Path;
-            if (context.Request.QueryString.HasValue)
-            {
-                requestPath += $"?{context.Request.QueryString}";
-            }
-
-            var serverResponse = await client.GetAsync(requestPath);
-
-            if (serverResponse.IsSuccessStatusCode)
-            {
-                var content = await serverResponse.Content.ReadAsByteArrayAsync();
-
-                foreach (var responseHeader in serverResponse.Headers)
-                {
-                    if (!headersToIgnore.Contains(responseHeader.Key))
-                    {
-                        context.Response.Headers.Add(responseHeader.Key, responseHeader.Value.ToArray());
-                    }
-                }
-
-                context.Response.Headers.ContentType = "application/javascript";
-
-                await context.Response.Body.WriteAsync(content);
-                return;
-            }
-        }
-        else if (context.WebSockets.IsWebSocketRequest)
-        {
-            var error = await httpForwarder.SendAsync(context, "ws://localhost:3000/",
-                websocketHttpClient, requestConfig, transformer);
-            // Check if the operation was successful
-            if (error != ForwarderError.None)
-            {
-                var errorFeature = context.GetForwarderErrorFeature();
-                var exception = errorFeature.Exception;
-
-                // Handle The client reset the request stream by swallowing it
-                if (exception is IOException { Message: "The client reset the request stream." })
-                {
-                    return;
-                }
-
-                if (exception is not null)
-                {
-                    throw exception;
-                }
-            }
-        }
-
-        await next.Invoke();
-    });
-}
-else
+// app.UseWebSockets();
+// if (app.Environment.IsDevelopment())
+// {
+//     app.Use(async (context, next) =>
+//     {
+//         if (context.Request.Path.StartsWithSegments("/@vite/client") ||
+//             context.Request.Path.Value.StartsWith("/src/") ||
+//             context.Request.Path.Value.StartsWith("/node_modules/")
+//            )
+//         {
+//             var pathFileExtension = Path.GetExtension(context.Request.Path.Value);
+//             var isImage = pathFileExtension == ".png" || pathFileExtension == ".jpg" || pathFileExtension == ".jpeg" ||
+//                           pathFileExtension == ".gif";
+//
+//             if (isImage)
+//             {
+//
+//             }
+//
+//             var client = new HttpClient();
+//             var requestPath = "http://localhost:3000" + context.Request.Path;
+//             if (context.Request.QueryString.HasValue)
+//             {
+//                 requestPath += $"?{context.Request.QueryString}";
+//             }
+//
+//             var serverResponse = await client.GetAsync(requestPath);
+//
+//             if (serverResponse.IsSuccessStatusCode)
+//             {
+//                 var content = await serverResponse.Content.ReadAsByteArrayAsync();
+//
+//                 foreach (var responseHeader in serverResponse.Headers)
+//                 {
+//                     if (!headersToIgnore.Contains(responseHeader.Key))
+//                     {
+//                         context.Response.Headers.Add(responseHeader.Key, responseHeader.Value.ToArray());
+//                     }
+//                 }
+//
+//                 context.Response.Headers.ContentType = "application/javascript";
+//
+//                 await context.Response.Body.WriteAsync(content);
+//                 return;
+//             }
+//         }
+//         else if (context.WebSockets.IsWebSocketRequest)
+//         {
+//             var error = await httpForwarder.SendAsync(context, "ws://localhost:3000/",
+//                 websocketHttpClient, requestConfig, transformer);
+//             // Check if the operation was successful
+//             if (error != ForwarderError.None)
+//             {
+//                 var errorFeature = context.GetForwarderErrorFeature();
+//                 var exception = errorFeature.Exception;
+//
+//                 // Handle The client reset the request stream by swallowing it
+//                 if (exception is IOException { Message: "The client reset the request stream." })
+//                 {
+//                     return;
+//                 }
+//
+//                 if (exception is not null)
+//                 {
+//                     throw exception;
+//                 }
+//             }
+//         }
+//
+//         await next.Invoke();
+//     });
+// }
+// else
 {
     app.UseStaticFiles();
 }
@@ -166,15 +166,15 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapFallbackToAreaController("Index", "Home", "Game");
-
-app.UseSpa(spa =>
-{
-    if (app.Environment.IsDevelopment())
-    {
-        spa.Options.SourcePath = "wwwroot";
-    }
-});
+// app.MapFallbackToAreaController("Index", "Home", "Game");
+//
+// app.UseSpa(spa =>
+// {
+//     if (app.Environment.IsDevelopment())
+//     {
+//         spa.Options.SourcePath = "wwwroot";
+//     }
+// });
 
 app.MapRazorPages();
 
