@@ -352,3 +352,4 @@ MigrationBackup/
 
 # Tailwind
 /OGame.MVC/wwwroot/css/tailwind.css
+/OGame.MVC/wwwroot/css/output.css
