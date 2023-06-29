@@ -620,19 +620,9 @@ video {
   border-style: solid;
 }
 
-.border-amber-50 {
-  --tw-border-opacity: 1;
-  border-color: rgb(250 249 236 / var(--tw-border-opacity));
-}
-
 .border-green-50 {
   --tw-border-opacity: 1;
   border-color: rgb(233 255 248 / var(--tw-border-opacity));
-}
-
-.border-amber-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(198 165 44 / var(--tw-border-opacity));
 }
 
 .border-sage-200 {

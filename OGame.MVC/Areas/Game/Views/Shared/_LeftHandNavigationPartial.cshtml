@@ -1,0 +1,35 @@
+﻿@using OGame.MVC.Areas.Game.Controllers
+@{
+    // get a list of all of the controllers under the Game area
+    var controllers = typeof(HomeController).Assembly.GetTypes()
+        .Where(type => typeof(Controller).IsAssignableFrom(type))
+        .Where(type => type.Namespace.Contains("Game.Controllers"))
+        .Select(type => type.Name.Replace("Controller", string.Empty))
+        .ToList();
+}
+
+@String.Join(", ", controllers)
+
+<ul>
+    <li>
+        <a asp-area="Game" asp-controller="Home" asp-action="Index">Overview</a>
+    </li>
+    <li>
+        <a asp-area="Game" asp-controller="Colonies" asp-action="Index">Colonies</a>
+    </li>
+    <li>
+        <a asp-area="Game" asp-controller="Productions" asp-action="Index">Productions</a>
+    </li>
+    <li>
+        <a asp-area="Game" asp-controller="Ships" asp-action="Index">Ships</a>
+    </li>
+    <li>
+        <a asp-area="Game" asp-controller="Resources" asp-action="Index">Resources</a>
+    </li>
+    <li>
+        <a asp-area="Game" asp-controller="Research" asp-action="Index">Research</a>
+    </li>
+    <li>
+        <a asp-area="Game" asp-controller="Quests" asp-action="Index">Quests</a>
+    </li>
+</ul>
