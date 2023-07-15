@@ -1,0 +1,49 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind ogame;
+
+body {
+  @apply bg-sage-900 text-sage-50 font-sans;
+}
+
+a {
+  @apply text-amber-300 hover:underline;
+}
+
+input[type=checkbox] {
+  appearance: none;
+  @apply bg-white m-0 text-current border border-current rounded-sm mr-1 inline-grid place-content-center;
+  width: 0.8em;
+  height: 0.8em;
+  transform: translateY(-0.1em);
+}
+
+input[type="checkbox"]::before {
+  @apply rounded-sm scale-0;
+  content: "";
+  width: 0.55em;
+  height: 0.55em;
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em theme("colors.amber.500");
+}
+
+input[type="checkbox"]:checked::before {
+  @apply scale-100;
+}
+
+input[type="email"], input[type="password"] {
+  @apply px-3 py-1 rounded w-52 bg-gray-50 mr-2 text-gray-600;
+}
+
+button[type="submit"]:not(.link-button) {
+  @apply px-3 py-1 border border-amber-200 rounded bg-amber-300/50 text-amber-50 transition-colors duration-150 ease-in-out;
+}
+
+button[type="submit"]:not(.link-button):hover {
+  @apply bg-amber-300/75 text-white;
+}
+
+.small-caps {
+  font-variant: small-caps;
+}

@@ -1,8 +1,18 @@
 ﻿@page
 @model OGame.MVC.Areas.Game.Views.Home.Index
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = "_Layout";
 }
 
-<div id="app" class="flex flex-1"></div>
+<div id="app" class="flex flex-row flex-1 border border-sage-200 rounded m-2">
+    <!-- left hand navigation wrapper -->
+    <div class="flex flex-col border-r border-sage-200 p-3">
+        <partial name="_LeftHandNavigationPartial" />
+    </div>
+    <!-- main content wrapper -->
+    <div class="flex flex-col flex-1 p-3">
+        Main content
+    </div>
+</div>
