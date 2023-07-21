@@ -1,35 +1,26 @@
-﻿@using OGame.MVC.Areas.Game.Controllers
+﻿@using OGame.MVC.Areas.Game.Services
 @{
-    // get a list of all of the controllers under the Game area
-    var controllers = typeof(HomeController).Assembly.GetTypes()
-        .Where(type => typeof(Controller).IsAssignableFrom(type))
-        .Where(type => type.Namespace.Contains("Game.Controllers"))
-        .Select(type => type.Name.Replace("Controller", string.Empty))
-        .ToList();
+    var currentController = ViewContext.RouteData.Values["controller"].ToString();
+    var currentAction = ViewContext.RouteData.Values["action"].ToString();
 }
-
-@String.Join(", ", controllers)
-
 <ul>
-    <li>
-        <a asp-area="Game" asp-controller="Home" asp-action="Index">Overview</a>
-    </li>
-    <li>
-        <a asp-area="Game" asp-controller="Colonies" asp-action="Index">Colonies</a>
-    </li>
-    <li>
-        <a asp-area="Game" asp-controller="Productions" asp-action="Index">Productions</a>
-    </li>
-    <li>
-        <a asp-area="Game" asp-controller="Ships" asp-action="Index">Ships</a>
-    </li>
-    <li>
-        <a asp-area="Game" asp-controller="Resources" asp-action="Index">Resources</a>
-    </li>
-    <li>
-        <a asp-area="Game" asp-controller="Research" asp-action="Index">Research</a>
-    </li>
-    <li>
-        <a asp-area="Game" asp-controller="Quests" asp-action="Index">Quests</a>
-    </li>
+    @foreach (var controllerWithActions in NavigationCache.GetControllersWithActions())
+    {
+        var isControllerSelected = currentController == controllerWithActions.Name;
+        <li>
+            <a asp-area="Game" asp-controller="@controllerWithActions.Name" asp-action="Index" class="@(isControllerSelected ? "selected" : "")">@controllerWithActions.Name</a>
+            @if (isControllerSelected)
+            {
+                <ul>
+                    @foreach (var action in controllerWithActions.Actions)
+                    {
+                        var isActionSelected = currentAction == action.Name;
+                        <li>
+                            <a asp-area="Game" asp-controller="@controllerWithActions.Name" asp-action="@action.Name" class="@(isActionSelected ? "selected" : "")">@action.Name</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
 </ul>

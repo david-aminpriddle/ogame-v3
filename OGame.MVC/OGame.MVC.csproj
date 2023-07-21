@@ -29,10 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Areas\Game\Data" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Update="wwwroot_temp\favicon.ico">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
