@@ -1,4 +1,5 @@
 ﻿@using OGame.MVC.Areas.Game.Services
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     var currentController = ViewContext.RouteData.Values["controller"].ToString();
     var currentAction = ViewContext.RouteData.Values["action"].ToString();
@@ -16,7 +17,7 @@
                     {
                         var isActionSelected = currentAction == action.Name;
                         <li>
-                            <a asp-area="Game" asp-controller="@controllerWithActions.Name" asp-action="@action.Name" class="@(isActionSelected ? "selected" : "")">@action.Name</a>
+                            <a asp-area="Game" asp-controller="@controllerWithActions.Name" asp-action="@action.Name" class="@(isActionSelected ? "selected" : "") ml-2">@action.Name</a>
                         </li>
                     }
                 </ul>

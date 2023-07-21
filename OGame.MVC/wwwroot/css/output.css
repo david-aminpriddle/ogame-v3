@@ -542,6 +542,10 @@ video {
   margin-top: 3rem;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -664,6 +668,10 @@ video {
 
 .pt-12 {
   padding-top: 3rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
 }
 
 .text-center {
